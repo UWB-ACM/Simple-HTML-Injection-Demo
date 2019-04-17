@@ -1,39 +1,78 @@
+<!DOCTYPE html>
 <html>
     <head>
+        <meta charset="utf-8" />
         <title>Simple HTML Injection Demo</title>
         <!-- bootstrap css -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
         <style type="text/stylesheet">
         </style>
-
-        <script type="type/javascript">
-            function update()
-            {
-                var el = document.getElementById("result");
-                var input = document.getElementById("input");
-                el.innerHTML = input.innerHTML;
-            }
-        </script>
     </head>
     <body>
         <div class="container">
             <h1 class="display-3">Simple HTML Injection Demo</h1>
+            <h5><a href="https://github.com/UWB-ACM/Simple-HTML-Injection-Demo">Created by UWB-ACM for UWB Hacks the Internet</a></h2>
+            <p>
+                HTML Injection is a common and very serious bug, in which a user's input is directly inserted into the page source
+                without any sanitization or validation.
+            </p>
+            <p>
+                In this example (you can <a href="https://github.com/UWB-ACM/Simple-HTML-Injection-Demo">view the source code here</a>, or press <kbd>F12</kbd>)
+                the text area <code>#input</code> directly updates the <code>innerHTML</code> of <code>#result</code>.
+            </p>
+            <p>
+                Here are some examples that you can try, just by copying and pasting.
+                <ul>
+                    <li><code>&lt;b&gt;this text should be bold&lt;/b&gt;</code></li>
+                    <li><code>&lt;h1&gt;this text is really big</code></li>
+                    <li><code>&lt;script&gt;alert("we just ran some javascript")&lt;/script&gt;</code></li>
+                    <li><code>&lt;script&gt;document.location=&quot;https://www.youtube.com/watch?v=dQw4w9WgXcQ&quot;&lt;/script&gt;</code></li>
+                    <li><code>&lt;style&gt;* { font-family: &quot;Comic Sans MS&quot; }&lt;/style&gt;&lt;h2&gt;We can do more than just HTML and JS&lt;/h2&gt;</code></li>
+                </ul>
+            </p>
             <form>
                 <div class="form-group">
                     <label>Type some data to inject:</label>
                     <br />
-                    <textarea id="input" name="data" onkeydown="update();">Hello, World!</textarea>
+                    <textarea id="input" name="data" oninput="window.update();"></textarea>
                 </div>
             </form>
-            <code id="result">
-                Your text will go here!
-            </code>
+            <p>
+                <code id="result">
+                    Your text will go here!
+                </code>
+            </p>
+            <p>
+                Be creative when looking for ideas. If you'd like some hints, <a href="https://github.com/minimaxir/big-list-of-naughty-strings">
+                consult a "big list of naughty strings", which are some known inputs which are likely to break things</a>.
+            </p>
+            <p>
+                In a static page like this, where changes that affect one client won't affect others, there's not much risk. However,
+                if this injection came from the result of dynamic pages (stored in a database), it could affect other users too.
+                This could result in any number of problems, including a serious risk of leaking user information.
+            </p>
         </div>
         
         <!-- bootstrap stuff-->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+        <script type="text/javascript">
+            // wait until everything is loaded
+            $(document).ready ( function()
+            {
+                // define this function under the window object so that it can be accessed from anywhere
+                window.update = function()
+                {
+                    console.log('aaa');
+                    // get the text field and the div that we are going to update with jQuery
+                    var el = $("#result");
+                    var input = $("#input");
+                    // set the innerHTML with jQuery
+                    el.html(input.val());
+                }
+            });
+        </script>
     </body>
 </html>
